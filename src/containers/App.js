@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import "./App.css";
-import Person from "./Person/Person";
+
+import classes from "./App.css";
+import Persons from "../components/Persons/Persons";
+import Cockpit from "../components/Cockpit/Cockpit";
 
 class App extends Component {
   state = {
@@ -45,53 +47,25 @@ class App extends Component {
   };
 
   render() {
-    const style = {
-      backgroundColor: "green",
-      color: "white",
-      font: "inherit",
-      border: "1px solid blue",
-      padding: "8px",
-      cursor: "pointer"
-    };
-
     let persons = null;
 
     if (this.state.showPersons) {
       persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return (
-              <Person
-                key={person.id}
-                click={() => this.deletePersonsHandler(index)}
-                name={person.name}
-                age={person.age}
-                changed={event => this.nameChangedHandler(event, person.id)}
-              />
-            );
-          })}
-        </div>
+        <Persons
+          persons={this.state.persons}
+          clicked={this.deletePersonsHandler}
+          changed={this.nameChangedHandler}
+        />
       );
-
-      style.backgroundColor = "red";
-    }
-
-    //let classes = ["red", "bold"].join(" ");
-    const classes = [];
-    if (this.state.persons.length <= 2) {
-      classes.push("red"); //classes = ['red']
-    }
-    if (this.state.persons.length <= 1) {
-      classes.push("bold"); //classes = ['red', 'bold']
     }
 
     return (
-      <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(" ")}>It's working!</p>
-        <button style={style} onClick={this.togglePersonsHandler}>
-          Toggle Persons
-        </button>
+      <div className={classes.App}>
+        <Cockpit
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          clicked={this.togglePersonsHandler}
+        />
         {persons}
       </div>
     );
